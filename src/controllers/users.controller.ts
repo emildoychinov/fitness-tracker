@@ -12,10 +12,10 @@ export class UsersController {
     // }
 
     @Post("/users")
-    async save(createUser: User) {
+    async save(username: string, password: string) {
         const user = new User();
-        user.username = 'stamat'
-        user.password = 'sagok'
+        user.username = username;
+        user.password = password;
         this.usersService.save(user)
         return "success!"
     }

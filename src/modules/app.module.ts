@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { HomeController } from '../controllers/home.controller';
 import { UsersModule } from './users.module';
 import { UsersController } from '../controllers/users.controller';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
