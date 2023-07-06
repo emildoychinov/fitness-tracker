@@ -8,6 +8,6 @@ export class AppController {
 
   @Get()
   getPage(@Res() res : Response){
-    res.sendFile('index.html');
+    res.sendFile(__dirname + 'index.html');
   }
 }
