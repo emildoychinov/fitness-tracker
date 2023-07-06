@@ -4,7 +4,12 @@ import { Controller, Get } from '@nestjs/common';
 export class HomeController {
 
   @Get('/home')
-  getHello(): string {
-    return 'Hello user'
+  getHello(){
+    var res = {
+        message : 'hello user!'
+    }
+
+    return res;
   }
+
 }
