@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getPage(@Res() res : Response){
-    res.sendFile('index.html');
+  resp(): string {
+    return 'Hello World!';
   }
 }
