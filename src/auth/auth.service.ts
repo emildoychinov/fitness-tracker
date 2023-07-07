@@ -45,6 +45,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new HttpException('No user found', HttpStatus.NOT_FOUND);
     }
+    
     return this.helper.generateToken(user);
   }
 

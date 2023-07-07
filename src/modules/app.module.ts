@@ -7,6 +7,9 @@ import { UsersModule } from './users.module';
 import { UsersController } from '../controllers/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { ExercisesModule } from './exercises.module';
+import { WorkoutsModule } from './workouts.module';
+import { WorkoutExerciseModule } from './workout_exercises.module';
 
 @Module({
   imports: [
@@ -25,7 +28,10 @@ import { JwtModule } from '@nestjs/jwt';
       autoLoadEntities: true,
       synchronize: false
     }),
-    UsersModule
+    UsersModule,
+    ExercisesModule,
+    WorkoutsModule,
+    WorkoutExerciseModule,
   ],
   controllers: [AppController, HomeController],
   providers: [AppService],

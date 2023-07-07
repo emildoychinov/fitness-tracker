@@ -4,7 +4,7 @@ import { Workout } from './workouts.entity';
 
 @Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => User)

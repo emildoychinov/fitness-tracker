@@ -5,7 +5,7 @@ import { Workout } from './workouts.entity';
 
 @Entity()
 export class Workout_exercise {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => Exercise)

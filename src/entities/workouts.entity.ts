@@ -3,7 +3,7 @@ import { User } from './users.entity';
 
 @Entity()
 export class Workout {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => User)
