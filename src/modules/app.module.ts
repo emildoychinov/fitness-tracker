@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ExercisesModule } from './exercises.module';
 import { WorkoutsModule } from './workouts.module';
 import { WorkoutExerciseModule } from './workout_exercises.module';
+import { CommentModule } from './comment.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WorkoutExerciseModule } from './workout_exercises.module';
     ExercisesModule,
     WorkoutsModule,
     WorkoutExerciseModule,
+    CommentModule
   ],
   controllers: [AppController, HomeController],
   providers: [AppService],
