@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Inject, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Post, Req } from '@nestjs/common';
 import { WorkoutsDto } from 'src/workouts/common/dto/workouts.dto';
 import { DecoderService } from 'src/decoder.service';
 import { WorkoutsService } from 'src/workouts/services/workouts.service';
 import { User } from 'src/users/common/entity/users.entity';
+import { Workout } from '../common/entity/workouts.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Controller('workouts')
 export class WorkoutsController {
@@ -11,6 +14,9 @@ export class WorkoutsController {
 
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
+
+    @InjectRepository(Workout)
+    private workoutsRepository: Repository<Workout>;
 
     @Post("user_workouts")
     async getUserWorkouts(@Body() body: any){
@@ -38,6 +44,15 @@ export class WorkoutsController {
         console.log(jwt_token);
         var res = await this.service.createWorkout(body, jwt_token);
         return res;
+    }
+
+    @Delete(':id')
+    async deleteWorkout(@Body() body: WorkoutsDto) {
+        const { workout_id }: WorkoutsDto = body;
+
+        let workout: Workout = await this.workoutsRepository.findOne({ where: { id: workout_id}})
+        await this.service.deleteWorkout(workout)
+
     }
 
 }

@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Workout } from 'src/workouts/common/entity/workouts.entity';
 import { Workout_exercisesDto } from 'src/workout_exercises/common/dto/workout_exercises.dto';
-import { Workout_exercise } from 'src/workout_exercises/common/entities/workout_exercises.entity';
 import { Exercise } from 'src/exercises/common/entity/exercises.entity';
+import { Workout_exercise } from '../common/entities/workout_exercises.entity';
 
 @Injectable()
 export class WorkoutExercisesService {
@@ -20,7 +20,7 @@ export class WorkoutExercisesService {
     //  }
 
     async findOne(Workout_exercise_name: string): Promise<Workout | null> {
-         return new Workout();
+        return new Workout();
     }
 
     async createWorkout_exercise(body: Workout_exercisesDto) {
@@ -41,4 +41,7 @@ export class WorkoutExercisesService {
         return this.WorkoutExerciseRepository.save(workout_exercise);
     }
 
+    async deleteOne(exercise: Workout_exercise) {
+        await this.WorkoutExerciseRepository.delete(exercise)
+    }
 }
