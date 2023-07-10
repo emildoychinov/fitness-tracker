@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '../controllers/app.controller';
-import { AppService } from '../services/app.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { HomeController } from '../controllers/home.controller';
-import { UsersModule } from './users.module';
-import { UsersController } from '../controllers/users.controller';
+import { HomeController } from './controllers/home.controller';
+import { UsersModule } from './users/users.module';
+import { UsersController } from './users/controllers/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { ExercisesModule } from './exercises.module';
-import { WorkoutsModule } from './workouts.module';
-import { WorkoutExerciseModule } from './workout_exercises.module';
-import { CommentModule } from './comment.module';
+import { ExercisesModule } from './exercises/exercises.module';
+import { WorkoutsModule } from './workouts/workouts.module';
+import { WorkoutExerciseModule } from './modules/workout_exercises.module';
+import { CommentModule } from './comments/comment.module';
 
 @Module({
   imports: [

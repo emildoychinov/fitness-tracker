@@ -1,11 +1,11 @@
 import { Controller, Post, Get, Body, Inject } from '@nestjs/common';
-import { Comment } from 'src/entities/comments.entity';
-import { CommentService } from 'src/services/comment.service';
-import { Commentdto } from 'src/dto/comment.dto';
-import { Workout } from 'src/entities/workouts.entity';
+import { Comment } from 'src/comments/common/entity/comments.entity';
+import { CommentService } from 'src/comments/services/comment.service';
+import { Commentdto } from 'src/comments/common/dto/comment.dto';
+import { Workout } from 'src/workouts/common/entity/workouts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DecoderService } from '../services/decoder.service';
+import { DecoderService } from '../../decoder.service';
 
 @Controller("/comment")
 export class CommentController {

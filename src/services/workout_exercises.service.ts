@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Workout } from 'src/entities/workouts.entity';
+import { Workout } from 'src/workouts/common/entity/workouts.entity';
 import { Workout_exercisesDto } from 'src/dto/workout_exercises.dto';
 import { Workout_exercise } from 'src/entities/workout_exercises.entity';
-import { Exercise } from 'src/entities/exercises.entity';
+import { Exercise } from 'src/exercises/common/entity/exercises.entity';
 
 @Injectable()
 export class WorkoutExercisesService {

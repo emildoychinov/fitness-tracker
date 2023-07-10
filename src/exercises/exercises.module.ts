@@ -6,13 +6,13 @@ import { AuthController } from 'src/auth/auth.controller';
 import { AuthHelper } from 'src/auth/auth.helper';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtStrategy } from 'src/auth/auth.strategy';
-import { ExercisesController } from 'src/controllers/exercises.controller';
-import { UsersController } from 'src/controllers/users.controller';
-import { Exercise } from 'src/entities/exercises.entity';
-import { ExercisesService } from 'src/services/exercises.service';
-import { UsersService } from 'src/services/users.service';
-import { UsersModule } from './users.module';
-import { DecoderService } from 'src/services/decoder.service';
+import { ExercisesController } from 'src/exercises/controllers/exercises.controller';
+import { UsersController } from 'src/users/controllers/users.controller';
+import { Exercise } from 'src/exercises/common/entity/exercises.entity';
+import { ExercisesService } from 'src/exercises/services/exercises.service';
+import { UsersService } from 'src/users/services/users.service';
+import { UsersModule } from '../users/users.module';
+import { DecoderService } from 'src/decoder.service';
 
 
 @Module({

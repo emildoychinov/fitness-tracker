@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { User } from './users.entity';
+import { User } from '../../../users/common/entity/users.entity';
 
 @Entity()
-export class Workout {
+export class Exercise {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -14,4 +14,6 @@ export class Workout {
   })
   name: string;
 
+  @Column()
+  muscle_group: string;
 }

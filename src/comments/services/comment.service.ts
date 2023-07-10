@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Comment } from 'src/entities/comments.entity';
+import { Comment } from 'src/comments/common/entity/comments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/users.entity';
-import { Workout } from 'src/entities/workouts.entity';
+import { User } from 'src/users/common/entity/users.entity';
+import { Workout } from 'src/workouts/common/entity/workouts.entity';
 
 @Injectable()
 export class CommentService {

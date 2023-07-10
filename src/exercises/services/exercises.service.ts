@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Exercise } from 'src/entities/exercises.entity';
-import { ExercisesDto } from 'src/dto/exercises.dto';
-import { DecoderService } from './decoder.service';
+import { Exercise } from 'src/exercises/common/entity/exercises.entity';
+import { ExercisesDto } from 'src/exercises/common/dto/exercises.dto';
+import { DecoderService } from '../../decoder.service';
 
 @Injectable()
 export class ExercisesService {

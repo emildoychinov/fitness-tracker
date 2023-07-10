@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Inject, Post, Req } from '@nestjs/common';
-import { WorkoutsDto } from 'src/dto/workouts.dto';
-import { DecoderService } from 'src/services/decoder.service';
-import { WorkoutsService } from 'src/services/workouts.service';
+import { WorkoutsDto } from 'src/workouts/common/dto/workouts.dto';
+import { DecoderService } from 'src/decoder.service';
+import { WorkoutsService } from 'src/workouts/services/workouts.service';
 
 @Controller('workout')
 export class WorkoutsController {
