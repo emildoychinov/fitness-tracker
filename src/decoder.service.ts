@@ -16,6 +16,10 @@ export class DecoderService{
         this.jwt = jwt;
     }
 
+    async getUserByName(username : string):Promise<User | null>{
+        var res = await this.UsersRepository.findOne({ where : { username }});
+        return res
+    }
     async get_jwt_token(req : any):Promise<string> {
         var token_index = req.rawHeaders.indexOf('Authorization')+1;
         var jwt_token = req.rawHeaders[token_index].split(' ')[1];

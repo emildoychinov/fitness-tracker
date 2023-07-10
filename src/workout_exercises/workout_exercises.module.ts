@@ -6,7 +6,7 @@ import { Workout_exercise } from 'src/workout_exercises/common/entities/workout_
 import { ExercisesModule } from '../exercises/exercises.module';
 import { ExercisesController } from 'src/exercises/controllers/exercises.controller';
 import { ExercisesService } from 'src/exercises/services/exercises.service';
-import { WorkoutExercisesController } from 'src/workout_exercises/services/workout_exercises.controller';
+import { WorkoutExercisesController } from 'src/workout_exercises/controllers/workout_exercises.controller';
 import { WorkoutExercisesService } from 'src/workout_exercises/services/workout_exercises.service';
 import { WorkoutsModule } from '../workouts/workouts.module';
 import { DecoderService } from 'src/decoder.service';

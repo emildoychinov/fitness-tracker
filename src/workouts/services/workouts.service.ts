@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Workout } from 'src/workouts/common/entity/workouts.entity';
 import { WorkoutsDto } from 'src/workouts/common/dto/workouts.dto';
 import { DecoderService } from '../../decoder.service';
+import { User } from 'src/users/common/entity/users.entity';
 
 @Injectable()
 export class WorkoutsService {
@@ -16,8 +17,23 @@ export class WorkoutsService {
     //      return this.WorkoutsRepository.find();
     //  }
 
-    async findOne(Workout_tname: string): Promise<Workout | null> {
-         return new Workout();
+    async findByUser(user: string): Promise<Workout[] | null> {
+         var res = await this.WorkoutsRepository.find({where : { creator : { username : user }}});
+         return res;
+    }
+
+    async findByFilter(filteringOption: string, filter: string): Promise<Workout[] | null>{
+        switch(filteringOption){
+            case "name" :
+                console.log(filter);
+                var res =  await this.WorkoutsRepository.find({where : 
+                    [{
+                        name : Like('%'+filter+'%')
+                    }]
+                });
+                console.log(res);
+                return res;
+        }
     }
 
     async createWorkout(body: WorkoutsDto, jwt_token: string) {
