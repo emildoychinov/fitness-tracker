@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
-import { User } from './src/entities/users.entity';
+import { User } from './src/users/common/entity/users.entity';
 
 
 config();
@@ -15,6 +15,6 @@ export default new DataSource({
   username: 'postgres',
   password: 'admin',
   database: 'fitnesstracker',
-  entities: ['dist/src/**/**.entity.js'],
+  entities: ['dist/src/**/common/entity/**.entity.js'],
   migrations: ['dist/src/migrations/*.js']
 });
