@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ExercisesModule } from './exercises/exercises.module';
 import { WorkoutsModule } from './workouts/workouts.module';
-import { WorkoutExerciseModule } from './modules/workout_exercises.module';
+import { WorkoutExerciseModule } from './workout_exercises/workout_exercises.module';
 import { CommentModule } from './comments/comment.module';
 
 @Module({
