@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Workout } from 'src/workouts/common/entity/workouts.entity';
-import { Workout_exercisesDto } from 'src/dto/workout_exercises.dto';
-import { Workout_exercise } from 'src/entities/workout_exercises.entity';
+import { Workout_exercisesDto } from 'src/workout_exercises/common/dto/workout_exercises.dto';
+import { Workout_exercise } from 'src/workout_exercises/common/entities/workout_exercises.entity';
 import { Exercise } from 'src/exercises/common/entity/exercises.entity';
 
 @Injectable()
