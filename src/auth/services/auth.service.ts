@@ -14,6 +14,7 @@ export class AuthService {
   private readonly helper: AuthHelper;
 
   public async register(body: RegisterDto): Promise<User | never> {
+
     const { username, password }: RegisterDto = body;
     let user: User = await this.repository.findOne({ where: { username } });
 
@@ -26,7 +27,7 @@ export class AuthService {
     user.username = username;
     user.password = this.helper.encodePassword(password);
 
-    console.log(user);
+
 
     return this.repository.save(user);
   }
@@ -46,7 +47,10 @@ export class AuthService {
       throw new HttpException('No user found', HttpStatus.NOT_FOUND);
     }
     
-    return this.helper.generateToken(user);
+    return JSON.stringify( {
+        token : this.helper.generateToken(user)
+      }
+    )
   }
 
   public async refresh(user: User): Promise<string> {

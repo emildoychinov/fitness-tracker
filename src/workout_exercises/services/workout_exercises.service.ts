@@ -26,6 +26,29 @@ export class WorkoutExercisesService {
     //  }
 
 
+    async findWorkoutExercise(workout_id, user_id, exercise_id) : Promise<Workout_exercise>{
+        return await this.WorkoutExerciseRepository.findOne({
+            where: {
+                workout: {
+                    id: workout_id,
+                    creator: {
+                        id: user_id
+                    }
+                },
+                exercise: { id: exercise_id }
+            }
+        });
+    }   
+
+    async createWorkoutExerciseObject(kg, reps, sets) : Promise<Workout_exercise>{
+        let workout_exercise = new Workout_exercise();
+        workout_exercise.kilograms = kg;
+        workout_exercise.reps = reps;
+        workout_exercise.sets = sets;
+
+        return workout_exercise;
+    }
+
     async createWorkout_exercise(body: Workout_exercisesDto) {
         const { kg, reps, sets, workout_id, exercise_id }: Workout_exercisesDto = body;
 
@@ -46,10 +69,7 @@ export class WorkoutExercisesService {
             }
         }
 
-        var workout_exercise = new Workout_exercise();
-        workout_exercise.kilograms = kg;
-        workout_exercise.reps = reps;
-        workout_exercise.sets = sets;
+        var workout_exercise = await this.createWorkoutExerciseObject(kg, reps, sets)
         workout_exercise.exercise = exercise;
         workout_exercise.workout = workout;
 
@@ -61,17 +81,7 @@ export class WorkoutExercisesService {
     async removeWorkout_exercise(jwt_token: string, body: any) {
 
         var user = await this.decoder.get_user(jwt_token);
-        var workout_exercise: Workout_exercise = await this.WorkoutExerciseRepository.findOne({
-            where: {
-                workout: {
-                    id: body.workout_id,
-                    creator: {
-                        id: user.id
-                    }
-                },
-                exercise: { id: body.exercise_id }
-            }
-        })
+        var workout_exercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
         if (!workout_exercise) {
             return {
                 code: 404,
@@ -84,29 +94,17 @@ export class WorkoutExercisesService {
 
     async updateWorkoutExercise(jwtToken: string, body: any) {
         let user = await this.decoder.get_user(jwtToken);
-        let workoutExercise: Workout_exercise = await this.WorkoutExerciseRepository.findOne({
-            where: {
-                workout: {
-                    id: body.workout_id,
-                    creator: {
-                        id: user.id
-                    }
-                },
-                exercise: { id: body.exercise_id }
-            }
-        })
+        let workoutExercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
 
         const { exercise, kilograms, sets, workout, reps }: Workout_exercise = body;
 
-        if (user.id != workout.creator.id){
-            throw new Error('User is not the creator of the workout')
+        if (!workoutExercise){
+            throw new Error('Workout exercise not found')
         }
 
         if (kilograms) workoutExercise.kilograms = kilograms;
         if (sets) workoutExercise.sets = sets;
-        if (workout) workoutExercise.workout = workout;
         if (reps) workoutExercise.reps = reps;
-        if (exercise) workoutExercise.exercise = exercise;
 
         await this.WorkoutExerciseRepository.save(workoutExercise)
 
