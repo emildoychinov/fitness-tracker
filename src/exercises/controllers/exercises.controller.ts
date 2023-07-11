@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Post, Req } from '@nestjs/common';
-import { ExercisesDto } from 'src/exercises/common/dto/exercises.dto';
+import { ExercisesDto } from 'src/exercises/dto/exercises.dto';
 import { DecoderService } from 'src/decoder.service';
 import { ExercisesService } from 'src/exercises/services/exercises.service';
 

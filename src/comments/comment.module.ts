@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { CommentController } from 'src/comments/controllers/comment.controller';
-import { Comment } from 'src/comments/common/entity/comments.entity';
-import { User } from 'src/users/common/entity/users.entity';
-import { Workout } from 'src/workouts/common/entity/workouts.entity';
+import { Comment } from 'src/comments/entity/comments.entity';
+import { User } from 'src/users/entity/users.entity';
+import { Workout } from 'src/workouts/entity/workouts.entity';
 import { CommentService } from 'src/comments/services/comment.service';
 import { DecoderService } from 'src/decoder.service';
 

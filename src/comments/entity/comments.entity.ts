@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { User } from '../../../users/common/entity/users.entity';
-import { Workout } from '../../../workouts/common/entity/workouts.entity';
+import { User } from '../../users/entity/users.entity';
+import { Workout } from '../../workouts/entity/workouts.entity';
 
 @Entity()
 export class Comment {

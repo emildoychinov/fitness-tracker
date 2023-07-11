@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkoutsController } from 'src/workouts/controllers/workouts.controller';
 import { WorkoutsService } from 'src/workouts/services/workouts.service';
-import { Workout_exercise } from 'src/workout_exercises/common/entities/workout_exercises.entity';
+import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
 import { ExercisesModule } from '../exercises/exercises.module';
 import { ExercisesController } from 'src/exercises/controllers/exercises.controller';
 import { ExercisesService } from 'src/exercises/services/exercises.service';
@@ -11,7 +11,7 @@ import { WorkoutExercisesService } from 'src/workout_exercises/services/workout_
 import { WorkoutsModule } from '../workouts/workouts.module';
 import { DecoderService } from 'src/decoder.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/common/entity/users.entity';
+import { User } from 'src/users/entity/users.entity';
 
 
 @Module({

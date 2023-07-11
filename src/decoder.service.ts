@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "./users/common/entity/users.entity";
+import { User } from "./users/entity/users.entity";
 import { Repository } from "typeorm/repository/Repository";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";

@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { Workout } from 'src/workouts/common/entity/workouts.entity';
-import { WorkoutsDto } from 'src/workouts/common/dto/workouts.dto';
+import { Workout } from 'src/workouts/entity/workouts.entity';
+import { WorkoutsDto } from 'src/workouts/dto/workouts.dto';
 import { DecoderService } from '../../decoder.service';
-import { User } from 'src/users/common/entity/users.entity';
+import { User } from 'src/users/entity/users.entity';
+import { UsersService } from 'src/users/services/users.service';
+import { savedWorkout } from '../entity/savedWorkouts.entity';
 
 @Injectable()
 export class WorkoutsService {
@@ -13,6 +15,10 @@ export class WorkoutsService {
     private WorkoutsRepository: Repository<Workout>;
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
+    @InjectRepository(User)
+    private UserRepository: Repository<User>;
+    @InjectRepository(savedWorkout)
+    private SavedWorkoutRepository: Repository<savedWorkout>
     //  findAll(): Promise<Workout[]> {
     //      return this.WorkoutsRepository.find();
     //  }
@@ -36,6 +42,32 @@ export class WorkoutsService {
         }
     }
 
+    async saveWorkout(body: any, jwt_token: string){
+        var user = await this.decoder.get_user(jwt_token);
+        var workout = await this.WorkoutsRepository.findOne( { where : { id : body.id }});
+        console.log(workout);
+        var SavedWorkout = new savedWorkout();
+        SavedWorkout.saver = user;
+        SavedWorkout.workout = workout;
+        return await this.SavedWorkoutRepository.save(SavedWorkout);
+
+    }
+
+    async unsaveWorkout(body: any, jwt_token: string){
+        var user = user = await this.decoder.get_user(jwt_token);
+        console.log(user);
+        var workout = await this.SavedWorkoutRepository.findOne({ 
+            where : { 
+                id : body.id,
+                saver : { id : user.id }
+            }
+        });
+
+        return await this.SavedWorkoutRepository.remove(workout);
+
+        
+    }
+
     async createWorkout(body: WorkoutsDto, jwt_token: string) {
         const {name}: WorkoutsDto = body;
 
@@ -47,9 +79,10 @@ export class WorkoutsService {
         var workout = new Workout();
         workout.creator = user;
         workout.name = name;
-
+        
+        await this.UserRepository.save(user);
         console.log(workout);
-        return this.WorkoutsRepository.save(workout);
+        return await this.WorkoutsRepository.save(workout);
     }
 
 }

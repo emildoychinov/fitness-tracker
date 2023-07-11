@@ -1,8 +1,8 @@
 import { Controller, Post, Get, Body, Inject } from '@nestjs/common';
-import { Comment } from 'src/comments/common/entity/comments.entity';
+import { Comment } from 'src/comments/entity/comments.entity';
 import { CommentService } from 'src/comments/services/comment.service';
-import { Commentdto } from 'src/comments/common/dto/comment.dto';
-import { Workout } from 'src/workouts/common/entity/workouts.entity';
+import { Commentdto } from 'src/comments/dto/comment.dto';
+import { Workout } from 'src/workouts/entity/workouts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DecoderService } from '../../decoder.service';
