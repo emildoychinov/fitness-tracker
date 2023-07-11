@@ -9,10 +9,11 @@ import { WorkoutsController } from 'src/workouts/controllers/workouts.controller
 import { WorkoutsService } from 'src/workouts/services/workouts.service';
 import { DecoderService } from 'src/decoder.service';
 import { savedWorkout } from './entity/savedWorkouts.entity';
+import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
 
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Workout, savedWorkout]), UsersModule],
+    imports: [TypeOrmModule.forFeature([Workout, savedWorkout, Workout_exercise]), UsersModule],
     exports: [TypeOrmModule],
     controllers: [WorkoutsController, UsersController],
     providers: [WorkoutsService, UsersService, DecoderService, JwtService],

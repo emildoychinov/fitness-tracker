@@ -90,8 +90,19 @@ export class WorkoutsService {
         return await this.WorkoutsRepository.save(workout);
     }
 
-    async deleteWorkout(body: Workout) {
-        await this.WorkoutsRepository.delete(body)
+    async deleteWorkout(workout_id,jwtToken : string) {
+
+        let user = await this.decoder.get_user(jwtToken);
+        let workout: Workout = await this.WorkoutsRepository.findOne({
+            where: {
+                id: workout_id,
+                creator : {
+                    id : user.id
+                } 
+            }
+        })
+
+        return await this.WorkoutsRepository.remove(workout);
     }
 
     async updateWorkout(jwtToken: string, body: any) {

@@ -21,8 +21,8 @@ export class DecoderService{
         return res
     }
     async get_jwt_token(req : any):Promise<string> {
-        var token_index = req.rawHeaders.indexOf('Authorization')+1;
-        var jwt_token = req.rawHeaders[token_index].split(' ')[1];
+        
+        var jwt_token = req.headers.authorization.split(' ')[1];
         return jwt_token;
     }
 

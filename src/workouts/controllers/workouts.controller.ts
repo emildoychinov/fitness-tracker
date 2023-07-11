@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Req } from '@nestjs/common';
 import { WorkoutsDto } from 'src/workouts/dto/workouts.dto';
 import { DecoderService } from 'src/decoder.service';
 import { WorkoutsService } from 'src/workouts/services/workouts.service';
@@ -40,6 +40,7 @@ export class WorkoutsController {
     @Post('create_workout')
     async createWorkout(@Req() req: any, @Body() body: WorkoutsDto){
         
+        console.log("headers : ", req.headers.authorization);
         var jwt_token = await this.decoder.get_jwt_token(req);
         console.log(jwt_token);
         var res = await this.service.createWorkout(body, jwt_token);
@@ -62,12 +63,11 @@ export class WorkoutsController {
         return res;
     }
     
-    @Delete(':id')
-    async deleteWorkout(@Body() body: WorkoutsDto) {
-        const { workout_id }: WorkoutsDto = body;
+    @Delete('delete_workout/:WORKOUT_ID')
+    async deleteWorkout(@Param('WORKOUT_ID') workout_id: number, @Req() req: any) {
 
-        let workout: Workout = await this.workoutsRepository.findOne({ where: { id: workout_id}})
-        await this.service.deleteWorkout(workout)
+        var jwt_token = await this.decoder.get_jwt_token(req);
+        return await this.service.deleteWorkout(workout_id,jwt_token);
 
     }
 

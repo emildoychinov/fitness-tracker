@@ -4,8 +4,5 @@ export class WorkoutsDto {
 
     @IsString()
     public readonly name: string;
-
-    @IsNumber()
-    public readonly workout_id: number;
     
 }
