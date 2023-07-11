@@ -12,7 +12,6 @@ export class Workout {
   @ManyToOne(() => User)
   creator: User;
 
-
   @Column({
     unique : true
   })

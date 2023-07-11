@@ -69,7 +69,12 @@ export class WorkoutExercisesService {
                 exercise : { id : body.exercise_id }
             }
         })
-
+        if(!workout_exercise){
+            return {
+                code : 404,
+                message : "not found"
+            }
+        }
         return await this.WorkoutExerciseRepository.remove(workout_exercise);
     }
 
