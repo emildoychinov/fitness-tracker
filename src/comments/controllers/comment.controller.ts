@@ -15,14 +15,13 @@ export class CommentController {
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
 
-    @Post('testasd')
+    @Post()
     async postComment(@Body() body: Commentdto, jwt_token: string) {
         const { workout_id, content }: Commentdto = body;
 
         let workout: Workout = await this.workoutsRepository.findOne({ where: { id: workout_id} });
         let user = await this.decoder.get_user(jwt_token);
 
-        // nqkuv if da sloja ako idto != null ako trq
         let comment = new Comment();
         comment.creator = user;
         comment.workout = workout;

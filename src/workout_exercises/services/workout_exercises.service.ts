@@ -6,10 +6,11 @@ import { Workout_exercisesDto } from 'src/workout_exercises/dto/workout_exercise
 import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
 import { Exercise } from 'src/exercises/entity/exercises.entity';
 import { DecoderService } from 'src/decoder.service';
+import { WorkoutsService } from 'src/workouts/services/workouts.service';
 
 @Injectable()
 export class WorkoutExercisesService {
-    
+
     @InjectRepository(Workout)
     private WorkoutsRepository: Repository<Workout>;
     @InjectRepository(Exercise)
@@ -18,28 +19,30 @@ export class WorkoutExercisesService {
     private WorkoutExerciseRepository: Repository<Workout_exercise>;
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
+    @Inject(WorkoutsService)
+    private readonly workoutService: WorkoutsService;
     //  findAll(): Promise<Workout[]> {
     //      return this.WorkoutsRepository.find();
     //  }
 
 
     async createWorkout_exercise(body: Workout_exercisesDto) {
-        const {kg, reps, sets, workout_id, exercise_id}: Workout_exercisesDto = body;
+        const { kg, reps, sets, workout_id, exercise_id }: Workout_exercisesDto = body;
 
-        var exercise : Exercise = await this.ExerciseRepository.findOne({ where : { id:exercise_id }});
-        var workout : Workout = await this.WorkoutsRepository.findOne({ where : { id:workout_id }});
+        var exercise: Exercise = await this.ExerciseRepository.findOne({ where: { id: exercise_id } });
+        var workout: Workout = await this.WorkoutsRepository.findOne({ where: { id: workout_id } });
 
-        if(!workout){
-            return {   
-                code : 404,
-                message : "Not found"
+        if (!workout) {
+            return {
+                code: 404,
+                message: "Not found"
             }
         }
 
-        if(!exercise){
-            return {   
-                code : 404,
-                message : "Not found"
+        if (!exercise) {
+            return {
+                code: 404,
+                message: "Not found"
             }
         }
 
@@ -55,27 +58,57 @@ export class WorkoutExercisesService {
         return this.WorkoutExerciseRepository.save(workout_exercise);
     }
 
-    async removeWorkout_exercise(jwt_token: string, body: any){
+    async removeWorkout_exercise(jwt_token: string, body: any) {
 
         var user = await this.decoder.get_user(jwt_token);
-        var workout_exercise:Workout_exercise = await this.WorkoutExerciseRepository.findOne({ 
-            where : { 
-                workout : { 
-                    id : body.workout_id,
-                    creator : {
-                        id : user.id
-                    } 
+        var workout_exercise: Workout_exercise = await this.WorkoutExerciseRepository.findOne({
+            where: {
+                workout: {
+                    id: body.workout_id,
+                    creator: {
+                        id: user.id
+                    }
                 },
-                exercise : { id : body.exercise_id }
+                exercise: { id: body.exercise_id }
             }
         })
-        if(!workout_exercise){
+        if (!workout_exercise) {
             return {
-                code : 404,
-                message : "not found"
+                code: 404,
+                message: "not found"
             }
         }
         return await this.WorkoutExerciseRepository.remove(workout_exercise);
     }
 
+
+    async updateWorkoutExercise(jwtToken: string, body: any) {
+        let user = await this.decoder.get_user(jwtToken);
+        let workoutExercise: Workout_exercise = await this.WorkoutExerciseRepository.findOne({
+            where: {
+                workout: {
+                    id: body.workout_id,
+                    creator: {
+                        id: user.id
+                    }
+                },
+                exercise: { id: body.exercise_id }
+            }
+        })
+
+        const { exercise, kilograms, sets, workout, reps }: Workout_exercise = body;
+
+        if (user.id != workout.creator.id){
+            throw new Error('User is not the creator of the workout')
+        }
+
+        if (kilograms) workoutExercise.kilograms = kilograms;
+        if (sets) workoutExercise.sets = sets;
+        if (workout) workoutExercise.workout = workout;
+        if (reps) workoutExercise.reps = reps;
+        if (exercise) workoutExercise.exercise = exercise;
+
+        await this.WorkoutExerciseRepository.save(workoutExercise)
+
+    }
 }

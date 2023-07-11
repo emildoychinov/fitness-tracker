@@ -14,14 +14,6 @@ export class CommentService {
         private commentRepository: Repository<Comment>,
     ) { }
 
-    // async addComment(creator: User, content: string, workout: Workout) {
-    //     const payload = {
-    //         creator,
-    //         content,
-    //         workout
-    //     }
-    // }
-
     async findOne(id: number): Promise<Workout> {
         return this.workoutRepository.findOneBy({ id })
     }

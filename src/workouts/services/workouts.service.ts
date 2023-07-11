@@ -7,12 +7,16 @@ import { DecoderService } from '../../decoder.service';
 import { User } from 'src/users/entity/users.entity';
 import { UsersService } from 'src/users/services/users.service';
 import { savedWorkout } from '../entity/savedWorkouts.entity';
+import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
+import { error } from 'console';
 
 @Injectable()
 export class WorkoutsService {
-    
+
     @InjectRepository(Workout)
     private WorkoutsRepository: Repository<Workout>;
+    @InjectRepository(Workout_exercise)
+    private WorkoutExerciseRepository: Repository<Workout_exercise>;
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
     @InjectRepository(User)
@@ -24,27 +28,28 @@ export class WorkoutsService {
     //  }
 
     async findByUser(user: string): Promise<Workout[] | null> {
-         var res = await this.WorkoutsRepository.find({where : { creator : { username : user }}});
-         return res;
+        var res = await this.WorkoutsRepository.find({ where: { creator: { username: user } } });
+        return res;
     }
 
-    async findByFilter(filteringOption: string, filter: string): Promise<Workout[] | null>{
-        switch(filteringOption){
-            case "name" :
+    async findByFilter(filteringOption: string, filter: string): Promise<Workout[] | null> {
+        switch (filteringOption) {
+            case "name":
                 console.log(filter);
-                var res =  await this.WorkoutsRepository.find({where : 
-                    [{
-                        name : Like('%'+filter+'%')
-                    }]
+                var res = await this.WorkoutsRepository.find({
+                    where:
+                        [{
+                            name: Like('%' + filter + '%')
+                        }]
                 });
                 console.log(res);
                 return res;
         }
     }
 
-    async saveWorkout(body: any, jwt_token: string){
+    async saveWorkout(body: any, jwt_token: string) {
         var user = await this.decoder.get_user(jwt_token);
-        var workout = await this.WorkoutsRepository.findOne( { where : { id : body.id }});
+        var workout = await this.WorkoutsRepository.findOne({ where: { id: body.id } });
         console.log(workout);
         var SavedWorkout = new savedWorkout();
         SavedWorkout.saver = user;
@@ -53,23 +58,23 @@ export class WorkoutsService {
 
     }
 
-    async unsaveWorkout(body: any, jwt_token: string){
+    async unsaveWorkout(body: any, jwt_token: string) {
         var user = user = await this.decoder.get_user(jwt_token);
         console.log(user);
-        var workout = await this.SavedWorkoutRepository.findOne({ 
-            where : { 
-                id : body.id,
-                saver : { id : user.id }
+        var workout = await this.SavedWorkoutRepository.findOne({
+            where: {
+                id: body.id,
+                saver: { id: user.id }
             }
         });
 
         return await this.SavedWorkoutRepository.remove(workout);
 
-        
+
     }
 
     async createWorkout(body: WorkoutsDto, jwt_token: string) {
-        const {name}: WorkoutsDto = body;
+        const { name }: WorkoutsDto = body;
 
         console.log("jwt : ", jwt_token);
         var user = await this.decoder.get_user(jwt_token);
@@ -79,7 +84,7 @@ export class WorkoutsService {
         var workout = new Workout();
         workout.creator = user;
         workout.name = name;
-        
+
         await this.UserRepository.save(user);
         console.log(workout);
         return await this.WorkoutsRepository.save(workout);
@@ -89,4 +94,25 @@ export class WorkoutsService {
         await this.WorkoutsRepository.delete(body)
     }
 
+    async updateWorkout(jwtToken: string, body: any) {
+
+        let user = await this.decoder.get_user(jwtToken);
+        let workout: Workout = await this.WorkoutsRepository.findOne({
+            where: {
+                id: body.workout_id,
+                creator: {
+                    id: user.id
+                }
+            }
+        })
+
+        const { creator, name }: Workout = body;
+
+        if (user.id != creator.id) {
+            throw new Error('User is not the creator of the workout')
+        }
+        if (name) workout.name = name;
+        await this.WorkoutsRepository.save(workout);
+        
+    }
 }
