@@ -85,4 +85,8 @@ export class WorkoutsService {
         return await this.WorkoutsRepository.save(workout);
     }
 
+    async deleteWorkout(body: Workout) {
+        await this.WorkoutsRepository.delete(body)
+    }
+
 }
