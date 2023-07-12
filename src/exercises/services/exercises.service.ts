@@ -57,28 +57,21 @@ export class ExercisesService {
 
     async deleteExercise(exercise_id, jwtToken: string) {
         let user = await this.decoder.get_user(jwtToken);
-        let exercise: Exercise = await this.ExercisesRepository.findOne({
-            where: {
-                creator: {
-                    id: user.id
-                },
-                id: exercise_id
-            }
-        })
-
-        let workout_exercises: Workout_exercise[] = await this.WorkoutExerciseRepository.find({
-            where: {
+        
+        await this.WorkoutExerciseRepository.delete({
                 exercise: {
                     id: exercise_id,
                     creator: {
                         id: user.id
                     }
                 }
-            }
+            });
+
+        return await this.ExercisesRepository.delete({
+            creator: {
+                id: user.id
+            },
+            id: exercise_id
         })
-
-        if (workout_exercises) this.WorkoutExerciseRepository.remove(workout_exercises);
-
-        return await this.ExercisesRepository.remove(exercise)
     }
 }
