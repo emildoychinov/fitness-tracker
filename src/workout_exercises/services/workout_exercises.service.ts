@@ -119,8 +119,11 @@ export class WorkoutExercisesService {
                         id: user.id
                     }
                 }
-            }
+            },
+            relations:["exercise"]
         });
+
+        console.log("exercise : ", allExercisesInAWorkout[0]);
         return allExercisesInAWorkout
     }  
 }

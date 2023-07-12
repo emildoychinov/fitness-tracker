@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DecoderService } from 'src/decoder.service';
 
-@Controller('workout_exercise')
+@Controller('workout_exercises')
 export class WorkoutExercisesController {
     @Inject(WorkoutExercisesService)
     private readonly service: WorkoutExercisesService;
@@ -22,7 +22,7 @@ export class WorkoutExercisesController {
         return res;
     }
 
-    @Delete('delete_exercis/:WORKOUT_ID/:WE_ID')
+    @Delete('delete_exercise/:WORKOUT_ID/:WE_ID')
     async removeWorkoutExercise(@Param('WORKOUT_ID') workout_id, @Param('WE_ID') we_id , @Req() req, @Body() body : any) {
         var jwt_token: string = await this.decoder.get_jwt_token(req);
         return await this.service.removeWorkout_exercise(jwt_token, workout_id, we_id);
