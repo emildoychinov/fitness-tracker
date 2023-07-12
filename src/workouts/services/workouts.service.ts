@@ -8,7 +8,7 @@ import { User } from 'src/users/entity/users.entity';
 import { UsersService } from 'src/users/services/users.service';
 import { savedWorkout } from '../entity/savedWorkouts.entity';
 import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
-import { error } from 'console';
+import { error, log } from 'console';
 
 @Injectable()
 export class WorkoutsService {
@@ -108,6 +108,8 @@ export class WorkoutsService {
     async updateWorkout(jwtToken: string, body: any) {
 
         let user = await this.decoder.get_user(jwtToken);
+        console.log('user id:',user.id);
+        
         let workout: Workout = await this.WorkoutsRepository.findOne({
             where: {
                 id: body.workout_id,
@@ -117,13 +119,14 @@ export class WorkoutsService {
             }
         })
 
-        const { creator, name }: Workout = body;
-
-        if (user.id != creator.id) {
+        const { name }: Workout = body;
+        console.log("creatorid:", body.creator);
+        
+        if (user.id != body.creator) {
             throw new Error('User is not the creator of the workout')
         }
         if (name) workout.name = name;
         await this.WorkoutsRepository.save(workout);
-        
+        return `Updated workout name to ${name}`;
     }
 }

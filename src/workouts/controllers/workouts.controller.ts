@@ -71,4 +71,9 @@ export class WorkoutsController {
 
     }
 
+    @Post('update_workout')
+    async updateWorkout(@Req() req: any, @Body() body: any) {
+        let jwtToken = await this.decoder.get_jwt_token(req)
+        return await this.service.updateWorkout(jwtToken, body)
+    }
 }

@@ -96,7 +96,7 @@ export class WorkoutExercisesService {
         let user = await this.decoder.get_user(jwtToken);
         let workoutExercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
 
-        const { exercise, kilograms, sets, workout, reps }: Workout_exercise = body;
+        const { kilograms, sets, reps }: Workout_exercise = body;
 
         if (!workoutExercise){
             throw new Error('Workout exercise not found')
