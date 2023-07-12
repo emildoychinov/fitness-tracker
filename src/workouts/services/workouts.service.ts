@@ -68,6 +68,8 @@ export class WorkoutsService {
             }
         });
 
+
+
         return await this.SavedWorkoutRepository.remove(workout);
 
 
@@ -101,6 +103,20 @@ export class WorkoutsService {
                 } 
             }
         })
+
+        let workout_exercises: Workout_exercise[] = await this.WorkoutExerciseRepository.find({
+            where: {
+                workout: {
+                    id: workout_id,
+                    creator: {
+                        id: user.id
+                    }
+                }
+            }
+        })
+
+        if(workout_exercises)
+            this.WorkoutExerciseRepository.remove(workout_exercises);
 
         return await this.WorkoutsRepository.remove(workout);
     }
