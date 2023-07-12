@@ -57,6 +57,7 @@ export class ExercisesService {
 
     async deleteExercise(exercise_id, jwtToken: string) {
         let user = await this.decoder.get_user(jwtToken);
+        console.log("user", user);
         
         await this.WorkoutExerciseRepository.delete({
                 exercise: {

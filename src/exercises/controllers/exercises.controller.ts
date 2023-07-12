@@ -18,15 +18,16 @@ export class ExercisesController {
         return res;
     }
 
-    @Patch('update/:id')
-    async updateExercise(@Param('id') exercise_id, @Req() req:any, @Body() body: any) {
+    @Patch('update/:ID')
+    async updateExercise(@Param('ID') exercise_id, @Req() req:any, @Body() body: any) {
         let jwtToken = await this.decoder.get_jwt_token(req);
         return await this.service.updateExercise(jwtToken, body, exercise_id)
     }
 
-    @Delete('delete/:id')
-    async deleteExercise(@Param('id') exercise_id, @Req() req:any) {
+    @Delete('delete/:ID')
+    async deleteExercise(@Param('ID') exercise_id, @Req() req:any) {
         let jwtToken = await this.decoder.get_jwt_token(req);
-        return await this.service.deleteExercise(jwtToken, exercise_id)
+        console.log(jwtToken);
+        return await this.service.deleteExercise(exercise_id, jwtToken)
     }
 }

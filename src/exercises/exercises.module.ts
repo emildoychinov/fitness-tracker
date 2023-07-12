@@ -13,10 +13,11 @@ import { ExercisesService } from 'src/exercises/services/exercises.service';
 import { UsersService } from 'src/users/services/users.service';
 import { UsersModule } from '../users/users.module';
 import { DecoderService } from 'src/decoder.service';
+import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
 
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Exercise]), UsersModule],
+    imports: [TypeOrmModule.forFeature([Exercise, Workout_exercise]), UsersModule],
     exports: [TypeOrmModule],
     controllers: [ExercisesController, UsersController],
     providers: [ExercisesService, UsersService, DecoderService,JwtService],
