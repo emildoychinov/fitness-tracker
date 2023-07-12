@@ -22,7 +22,6 @@ export class WorkoutExercisesController {
         return res;
     }
 
-
     @Post('delete_exercise')
     async removeWorkoutExercise(@Req() req, @Body() body : any) {
         var jwt_token: string = await this.decoder.get_jwt_token(req);

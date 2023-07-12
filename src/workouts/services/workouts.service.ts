@@ -113,7 +113,7 @@ export class WorkoutsService {
         let workout: Workout = await this.WorkoutsRepository.findOne({
             where: {
                 id: body.workout_id,
-                creator: {
+                creator: {  
                     id: user.id
                 }
             }
@@ -125,6 +125,7 @@ export class WorkoutsService {
         if (user.id != body.creator) {
             throw new Error('User is not the creator of the workout')
         }
+
         if (name) workout.name = name;
         await this.WorkoutsRepository.save(workout);
         return `Updated workout name to ${name}`;
