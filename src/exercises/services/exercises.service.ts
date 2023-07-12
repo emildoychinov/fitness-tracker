@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { Exercise } from 'src/exercises/entity/exercises.entity';
 import { ExercisesDto } from 'src/exercises/dto/exercises.dto';
 import { DecoderService } from '../../decoder.service';
+import { Workout_exercise } from 'src/workout_exercises/entity/workout_exercises.entity';
 
 @Injectable()
 export class ExercisesService {
     
     @InjectRepository(Exercise)
     private ExercisesRepository: Repository<Exercise>;
+    @InjectRepository(Workout_exercise)
+    private WorkoutExerciseRepository: Repository<Workout_exercise>;
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
 
@@ -35,4 +38,47 @@ export class ExercisesService {
         return this.ExercisesRepository.save(exercise);
     }
 
+    async updateExercise(jwtToken: string, body: any, exercise_id: any) {
+        let user = await this.decoder.get_user(jwtToken);
+
+        let exercise: Exercise = await this.ExercisesRepository.findOne({
+            where: {
+                creator: {
+                    id: user.id
+                },
+                id: exercise_id
+            }
+        })
+
+        exercise.name = body.name;
+        exercise.muscle_group = body.muscle_group
+        return await this.ExercisesRepository.save(exercise)
+    }
+
+    async deleteExercise(exercise_id, jwtToken: string) {
+        let user = await this.decoder.get_user(jwtToken);
+        let exercise: Exercise = await this.ExercisesRepository.findOne({
+            where: {
+                creator: {
+                    id: user.id
+                },
+                id: exercise_id
+            }
+        })
+
+        let workout_exercises: Workout_exercise[] = await this.WorkoutExerciseRepository.find({
+            where: {
+                exercise: {
+                    id: exercise_id,
+                    creator: {
+                        id: user.id
+                    }
+                }
+            }
+        })
+
+        if (workout_exercises) this.WorkoutExerciseRepository.remove(workout_exercises);
+
+        return await this.ExercisesRepository.remove(exercise)
+    }
 }
