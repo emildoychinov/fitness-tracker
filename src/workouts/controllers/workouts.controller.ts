@@ -67,7 +67,8 @@ export class WorkoutsController {
     async deleteWorkout(@Param('WORKOUT_ID') workout_id: number, @Req() req: any) {
 
         var jwt_token = await this.decoder.get_jwt_token(req);
-        return await this.service.deleteWorkout(workout_id,jwt_token);
+        var res = await this.service.deleteWorkout(workout_id,jwt_token);
+        return res;
 
     }
 

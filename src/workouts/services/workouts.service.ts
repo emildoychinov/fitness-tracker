@@ -123,7 +123,7 @@ export class WorkoutsService {
             throw new Error('User is not the creator of the workout')
         }
         if (name) workout.name = name;
-        await this.WorkoutsRepository.save(workout);
+        return await this.WorkoutsRepository.save(workout);
         
     }
 }
