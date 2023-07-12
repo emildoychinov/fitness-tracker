@@ -35,7 +35,7 @@ export class WorkoutExercisesService {
                         id: user_id
                     }
                 },
-                exercise: { id: exercise_id }
+                id : exercise_id
             }
         });
     }   
@@ -78,10 +78,10 @@ export class WorkoutExercisesService {
         return this.WorkoutExerciseRepository.save(workout_exercise);
     }
 
-    async removeWorkout_exercise(jwt_token: string, body: any) {
+    async removeWorkout_exercise(jwt_token: string, workout_id, we_id) {
 
         var user = await this.decoder.get_user(jwt_token);
-        var workout_exercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
+        var workout_exercise: Workout_exercise = await this.findWorkoutExercise(workout_id, user.id, we_id);
         if (!workout_exercise) {
             return {
                 code: 404,
@@ -91,9 +91,9 @@ export class WorkoutExercisesService {
         return await this.WorkoutExerciseRepository.remove(workout_exercise);
     }
 
-    async updateWorkoutExercise(jwtToken: string, body: any) {
+    async updateWorkoutExercise(jwtToken: string, body: any, workout_id, we_id) {
         let user = await this.decoder.get_user(jwtToken);
-        let workoutExercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
+        let workoutExercise: Workout_exercise = await this.findWorkoutExercise(workout_id, user.id, we_id);
 
         const { kilograms, sets, reps }: Workout_exercise = body;
 

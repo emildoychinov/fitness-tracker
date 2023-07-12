@@ -105,29 +105,28 @@ export class WorkoutsService {
         return await this.WorkoutsRepository.remove(workout);
     }
 
-    async updateWorkout(jwtToken: string, body: any) {
+    async updateWorkout(jwtToken: string, body: any, workout_id: any) {
 
         let user = await this.decoder.get_user(jwtToken);
         console.log('user id:',user.id);
         
         let workout: Workout = await this.WorkoutsRepository.findOne({
             where: {
-                id: body.workout_id,
+                id: workout_id,
                 creator: {  
                     id: user.id
                 }
             }
         })
 
-        const { name }: Workout = body;
-        console.log("creatorid:", body.creator);
+        console.log("workout : ", workout);
         
-        if (user.id != body.creator) {
-            throw new Error('User is not the creator of the workout')
-        }
+        // if (user.id != body.creator) {
+        //     throw new Error('User is not the creator of the workout')
+        // }
 
-        if (name) workout.name = name;
-        await this.WorkoutsRepository.save(workout);
-        return `Updated workout name to ${name}`;
+        workout.name = body.name;
+        console.log`Updated workout name to ${workout.name}`
+        return await this.WorkoutsRepository.save(workout);
     }
 }

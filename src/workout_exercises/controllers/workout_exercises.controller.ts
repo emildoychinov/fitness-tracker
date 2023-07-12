@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Req } from '@nestjs/common';
 import { Workout_exercisesDto } from 'src/workout_exercises/dto/workout_exercises.dto';
 import { WorkoutExercisesService } from 'src/workout_exercises/services/workout_exercises.service';
 import { Workout_exercise } from '../entity/workout_exercises.entity';
@@ -22,16 +22,16 @@ export class WorkoutExercisesController {
         return res;
     }
 
-    @Post('delete_exercise')
-    async removeWorkoutExercise(@Req() req, @Body() body : any) {
+    @Delete('delete_exercis/:WORKOUT_ID/:WE_ID')
+    async removeWorkoutExercise(@Param('WORKOUT_ID') workout_id, @Param('WE_ID') we_id , @Req() req, @Body() body : any) {
         var jwt_token: string = await this.decoder.get_jwt_token(req);
-        return await this.service.removeWorkout_exercise(jwt_token, body);
+        return await this.service.removeWorkout_exercise(jwt_token, workout_id, we_id);
     }
 
-    @Post('update')
-    async updateWE(@Req() req: any, @Body() body: any) {
+    @Patch('update/:WORKOUT_ID/:WE_ID')
+    async updateWE(@Param('WORKOUT_ID') workout_id, @Param('WE_ID') we_id ,  @Req() req: any, @Body() body: any) {
         let jwtToken = await this.decoder.get_jwt_token(req)
-        return await this.service.updateWorkoutExercise(jwtToken, body)
+        return await this.service.updateWorkoutExercise(jwtToken, body, workout_id, we_id)
     }
 
     @Get("findall/:id")
