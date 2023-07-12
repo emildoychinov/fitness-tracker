@@ -61,16 +61,14 @@ export class WorkoutsService {
     async unsaveWorkout(body: any, jwt_token: string) {
         var user = user = await this.decoder.get_user(jwt_token);
         console.log(user);
-        var workout = await this.SavedWorkoutRepository.findOne({
-            where: {
+        var workout = await this.SavedWorkoutRepository.delete({
                 id: body.id,
                 saver: { id: user.id }
-            }
         });
 
 
 
-        return await this.SavedWorkoutRepository.remove(workout);
+        return workout;
 
 
     }
@@ -95,30 +93,25 @@ export class WorkoutsService {
     async deleteWorkout(workout_id,jwtToken : string) {
 
         let user = await this.decoder.get_user(jwtToken);
-        let workout: Workout = await this.WorkoutsRepository.findOne({
-            where: {
-                id: workout_id,
-                creator : {
-                    id : user.id
-                } 
-            }
-        })
 
-        let workout_exercises: Workout_exercise[] = await this.WorkoutExerciseRepository.find({
-            where: {
-                workout: {
-                    id: workout_id,
-                    creator: {
-                        id: user.id
-                    }
+        let workout_exercises = await this.WorkoutExerciseRepository.delete({
+            workout: {
+                id: workout_id,
+                creator: {
+                    id: user.id
                 }
             }
         })
 
-        if(workout_exercises)
-            this.WorkoutExerciseRepository.remove(workout_exercises);
-
-        return await this.WorkoutsRepository.remove(workout);
+        let workout = await this.WorkoutsRepository.delete({
+            id: workout_id,
+            creator : {
+                    id : user.id
+            } 
+         }
+        )
+        
+        return workout;
     }
 
     async updateWorkout(jwtToken: string, body: any, workout_id: any) {
