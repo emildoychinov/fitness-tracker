@@ -15,18 +15,23 @@ export class WorkoutExercisesController {
     @Inject(DecoderService)
     private readonly decoder: DecoderService
 
-    @Post('test')
+    @Post('create')
     async createWorkoutExercise(@Body() body: Workout_exercisesDto) {
 
         var res = await this.service.createWorkout_exercise(body);
         return res;
     }
 
-
     @Post('delete_exercise')
     async removeWorkoutExercise(@Req() req, @Body() body : any) {
         var jwt_token: string = await this.decoder.get_jwt_token(req);
         return await this.service.removeWorkout_exercise(jwt_token, body);
+    }
+
+    @Post('update')
+    async updateWE(@Req() req: any, @Body() body: any) {
+        let jwtToken = await this.decoder.get_jwt_token(req)
+        return await this.service.updateWorkoutExercise(jwtToken, body)
     }
 
 }
