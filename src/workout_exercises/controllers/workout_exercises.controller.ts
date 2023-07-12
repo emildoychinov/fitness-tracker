@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Req } from '@nestjs/common';
 import { Workout_exercisesDto } from 'src/workout_exercises/dto/workout_exercises.dto';
 import { WorkoutExercisesService } from 'src/workout_exercises/services/workout_exercises.service';
 import { Workout_exercise } from '../entity/workout_exercises.entity';
@@ -34,4 +34,11 @@ export class WorkoutExercisesController {
         return await this.service.updateWorkoutExercise(jwtToken, body)
     }
 
+    @Get("findall/:id")
+    async getAllWE(@Param('id') workout_id: number, @Req() req: any) {
+        let jwtToken = await this.decoder.get_jwt_token(req)
+        return await this.service.findAllWorkoutExercises(jwtToken, workout_id)
+    }
+
 }
+

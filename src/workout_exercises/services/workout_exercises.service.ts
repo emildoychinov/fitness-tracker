@@ -91,7 +91,6 @@ export class WorkoutExercisesService {
         return await this.WorkoutExerciseRepository.remove(workout_exercise);
     }
 
-
     async updateWorkoutExercise(jwtToken: string, body: any) {
         let user = await this.decoder.get_user(jwtToken);
         let workoutExercise: Workout_exercise = await this.findWorkoutExercise(body.workout_id, user.id, body.exercise_id);
@@ -107,6 +106,21 @@ export class WorkoutExercisesService {
         if (reps) workoutExercise.reps = reps;
 
         await this.WorkoutExerciseRepository.save(workoutExercise)
-
     }
+
+    async findAllWorkoutExercises(jwtToken: string, workout_id: number): Promise<Workout_exercise[]>{
+        let user = await this.decoder.get_user(jwtToken);
+
+        let allExercisesInAWorkout: Workout_exercise[] = await this.WorkoutExerciseRepository.find({
+            where: {
+                workout: {
+                    id: workout_id,
+                    creator: {
+                        id: user.id
+                    }
+                }
+            }
+        });
+        return allExercisesInAWorkout
+    }  
 }
