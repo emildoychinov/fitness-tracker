@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Req } from '@nestjs/common';
 import { WorkoutsDto } from 'src/workouts/dto/workouts.dto';
 import { DecoderService } from 'src/decoder.service';
 import { WorkoutsService } from 'src/workouts/services/workouts.service';
@@ -72,9 +72,10 @@ export class WorkoutsController {
 
     }
 
-    @Post('update_workout')
-    async updateWorkout(@Req() req: any, @Body() body: any) {
-        let jwtToken = await this.decoder.get_jwt_token(req)
-        return await this.service.updateWorkout(jwtToken, body)
+    @Patch('update_workout/:WORKOUT_ID')
+    async updateWorkout(@Param('WORKOUT_ID') workout_id, @Req() req: any, @Body() body: any) {
+        let jwtToken = await this.decoder.get_jwt_token(req);
+        console.log(workout_id);
+        return await this.service.updateWorkout(jwtToken, body, workout_id)
     }
 }
