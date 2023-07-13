@@ -27,6 +27,11 @@ export class WorkoutsService {
     //      return this.WorkoutsRepository.find();
     //  }
 
+
+    async getWorkout(workout_id: number){
+        var res = await this.WorkoutsRepository.findOne({where: {id: workout_id}});
+        return res;
+    }
     async findByUser(user: string): Promise<Workout[] | null> {
         var res = await this.WorkoutsRepository.find({ where: { creator: { username: user } } });
         return res;

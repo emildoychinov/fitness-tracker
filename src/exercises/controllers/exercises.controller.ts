@@ -10,6 +10,12 @@ export class ExercisesController {
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
 
+    @Get('exercises/:EXERCISE_ID')
+    async getExercise(@Param('EXERCISE_ID') exercise_id: number) {
+        var res = await this.service.getExercise(exercise_id);
+        return res;
+    }
+    
     @Post('create_exercise')
     async createExercise(@Req() req: any, @Body() body: ExercisesDto){
         var jwt_token = await this.decoder.get_jwt_token(req);

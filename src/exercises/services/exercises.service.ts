@@ -20,8 +20,8 @@ export class ExercisesService {
     //      return this.ExercisesRepository.find();
     //  }
 
-    async findOne(Exercisename: string): Promise<Exercise | null> {
-         return new Exercise();
+    async getExercise(exercise_id: number): Promise<Exercise | null> {
+         return await this.ExercisesRepository.findOne({where : { id : exercise_id}});
     }
 
     async createExercise(body: ExercisesDto, jwt_token: string) {

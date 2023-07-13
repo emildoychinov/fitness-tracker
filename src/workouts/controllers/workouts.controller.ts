@@ -18,6 +18,13 @@ export class WorkoutsController {
     @InjectRepository(Workout)
     private workoutsRepository: Repository<Workout>;
 
+
+    @Get("workouts/:WORKOUT_ID")
+    async getWorkout(@Param('WORKOUT_ID') workout_id: number, @Req() req: any) {
+        var res = await this.service.getWorkout(workout_id);
+        return res;
+    }
+    
     @Post("user_workouts")
     async getUserWorkouts(@Body() body: any){
         var res = await this.service.findByUser(body.user);

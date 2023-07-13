@@ -25,7 +25,6 @@ export class WorkoutExercisesService {
     //      return this.WorkoutsRepository.find();
     //  }
 
-
     async findWorkoutExercise(workout_id, user_id, exercise_id) : Promise<Workout_exercise>{
         return await this.WorkoutExerciseRepository.findOne({
             where: {
