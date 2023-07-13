@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-statefulset
 spec:
   replicas: 2
+  serviceName: postgres-service
   selector:
     matchLabels:
       app: postgres
@@ -22,6 +23,17 @@ spec:
               value: admin
             - name: POSTGRES_DB
               value: fitnesstracker
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: shared-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
 ---
 apiVersion: v1
 kind: Service

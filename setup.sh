@@ -10,4 +10,5 @@ kubectl exec -it $SERVER -- bash -c "npm run typeorm:generate-migration"
 kubectl exec -it $SERVER -- bash -c "mv *-migrations.ts src/migrations"
 kubectl exec -it $SERVER -- bash -c "npm run build"
 kubectl exec -it $SERVER -- bash -c "npm run typeorm:run-migrations"
+kubectl exec -it $SERVER -- bash -c "npm run start"
 kubectl autoscale deployment server-deployment --cpu-percent=50 --min=1 --max=10
