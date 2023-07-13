@@ -19,7 +19,7 @@ import { CommentModule } from './comments/comment.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres-service',
       port: 5432,
       username: 'postgres',
       password: 'admin',
