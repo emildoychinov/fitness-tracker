@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Inject, Param, Req } from '@nestjs/common';
+import { Controller, Post, Get, Body, Inject, Param, Req, Delete } from '@nestjs/common';
 import { Comment } from 'src/comments/entity/comments.entity';
 import { CommentService } from 'src/comments/services/comment.service';
 import { Commentdto } from 'src/comments/dto/comment.dto';
@@ -25,5 +25,10 @@ export class CommentController {
     @Get('workout/:WORKOUT_ID')
     async loadComments(@Param('WORKOUT_ID') workout_id: number){
         return await this.commentService.loadComments(workout_id);
+    }
+
+    @Delete('workout/:WORKOUT_ID')  
+    async deleteComment(@Param('WORKOUT_ID') workout_id: number){
+        return await this.commentService.deleteComment(workout_id);
     }
 }

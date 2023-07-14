@@ -50,4 +50,10 @@ export class CommentService {
         )
     }
 
+    async deleteComment(workout_id: number) {
+        return await this.commentRepository.delete({
+            id: workout_id
+        })
+    }
+
 }
