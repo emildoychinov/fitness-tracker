@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Inject } from '@nestjs/common';
+import { Controller, Post, Get, Body, Inject, Param, Req } from '@nestjs/common';
 import { Comment } from 'src/comments/entity/comments.entity';
 import { CommentService } from 'src/comments/services/comment.service';
 import { Commentdto } from 'src/comments/dto/comment.dto';
@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DecoderService } from '../../decoder.service';
 
-@Controller("/comment")
+@Controller("/comments")
 export class CommentController {
     constructor(private readonly commentService: CommentService) { }
     @InjectRepository(Workout)
@@ -15,18 +15,15 @@ export class CommentController {
     @Inject(DecoderService)
     private readonly decoder: DecoderService;
 
-    @Post()
-    async postComment(@Body() body: Commentdto, jwt_token: string) {
-        const { workout_id, content }: Commentdto = body;
+    @Post('post')
+    async postComment(@Req() req: any, @Body() body: Commentdto) {
+        var jwt_token = await this.decoder.get_jwt_token(req);
+        console.log('comments;jwt_token ', jwt_token)
+        return await this.commentService.comment(jwt_token, body)
+    }
 
-        let workout: Workout = await this.workoutsRepository.findOne({ where: { id: workout_id} });
-        let user = await this.decoder.get_user(jwt_token);
-
-        let comment = new Comment();
-        comment.creator = user;
-        comment.workout = workout;
-        comment.content = content;
-
-        return this.commentService.saveComment(comment)
+    @Get('workout/:WORKOUT_ID')
+    async loadComments(@Param('WORKOUT_ID') workout_id: number){
+        return await this.commentService.loadComments(workout_id);
     }
 }
